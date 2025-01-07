@@ -1,3 +1,6 @@
+# This workflow sets up the environment required for testing & generating
+# fixtures for the interpreter tester against the official jlox implementation.
+
 name: 'interpreter-tester prerequisites'
 description: 'Set up interpreter-tester test prerequisites'
 
