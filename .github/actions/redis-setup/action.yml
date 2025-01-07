@@ -1,0 +1,28 @@
+# This workflow sets up the environment required for testing & generating
+# fixtures for the redis tester against the official redis implementation.
+
+name: 'redis-tester prerequisites'
+description: 'Set up redis-tester test prerequisites'
+
+runs:
+  using: "composite"
+  steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.21.x
+
+      - name: Install Redis
+        shell: bash
+        run: |-
+          curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+          sudo apt-get update
+          sudo apt-get install redis
+
+      - name: "Stop redis service"
+        shell: bash
+        run: sudo service redis-server stop
